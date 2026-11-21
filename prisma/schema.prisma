@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  barcode     String   @unique
+  name        String
+  price       Float
+  stock       Int      @default(0)
+  image       String?
+  createdAt   DateTime @default(now())
+  transactions StockTransaction[]
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  total     Float
+  createdAt DateTime @default(now())
+  items     TransactionItem[]
+}
+
+model TransactionItem {
+  id            Int         @id @default(autoincrement())
+  transactionId Int
+  productId     Int
+  quantity      Int
+  price         Float
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+}
+
+model StockTransaction {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  type      String   // "IN" atau "OUT"
+  quantity  Int
+  costPrice Float?   // Harga beli per unit (untuk FIFO)
+  reason    String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+}
