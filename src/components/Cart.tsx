@@ -1,7 +1,16 @@
 'use client';
-import { Trash2 } from 'lucide-react';
 
-export default function Cart({ cart, total }: { cart: any[], total: number }) {
+interface CartItem {
+  product: {
+    id: number;
+    name: string;
+    price: number;
+    barcode: string;
+  };
+  quantity: number;
+}
+
+export default function Cart({ cart, total }: { cart: CartItem[], total: number }) {
   return (
     <div className="flex flex-col h-full">
       <h2 className="text-xl font-bold mb-4 text-slate-800">Keranjang</h2>

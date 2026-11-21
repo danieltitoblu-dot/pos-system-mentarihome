@@ -2,18 +2,26 @@
 import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 
+interface Product {
+  name: string;
+  barcode: string;
+  price: number;
+  stock: number;
+  image: string;
+}
+
 function EditProductForm() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState({ name: '', barcode: '', price: 0, stock: 0, image: '' });
+  const [product, setProduct] = useState<Product>({ name: '', barcode: '', price: 0, stock: 0, image: '' });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
     fetch('/api/products')
       .then(res => res.json())
-      .then(data => {
-        const item = data.find((p: any) => p.id.toString() === id);
+      .then((data: (Product & { id: number | string })[]) => {
+        const item = data.find((p) => p.id.toString() === id);
         if (item) setProduct(item);
         setLoading(false);
       });

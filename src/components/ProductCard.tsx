@@ -1,5 +1,15 @@
 'use client';
-export default function ProductCard({ product, onAdd }: { product: any, onAdd: (p: any) => void }) {
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  image?: string | null;
+  barcode: string;
+}
+
+export default function ProductCard({ product, onAdd }: { product: Product, onAdd: (p: Product) => void }) {
   return (
     <div 
       className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 hover:shadow-md transition-all cursor-pointer flex flex-col items-center"
