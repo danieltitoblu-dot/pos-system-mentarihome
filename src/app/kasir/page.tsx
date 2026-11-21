@@ -41,23 +41,31 @@ export default function POSPage() {
   const startScanner = async () => {
     setIsScannerOpen(true);
     setScanningMessage('Memindai barcode...');
-    html5QrcodeRef.current = new Html5Qrcode('reader');
-    try {
-      await html5QrcodeRef.current.start(
-        { facingMode: 'environment' },
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        (decodedText) => {
-          setBarcodeInput(decodedText);
-          handleBarcodeScan(decodedText);
-          setIsScannerOpen(false);
-          html5QrcodeRef.current?.stop().then(() => html5QrcodeRef.current?.clear());
-        },
-        () => {}
-      );
-    } catch {
-      setScanningMessage('Gagal mengakses kamera');
-      setIsScannerOpen(false);
-    }
+    setTimeout(async () => {
+      const readerEl = document.getElementById('reader');
+      if (!readerEl) {
+        setScanningMessage('Elemen scanner tidak ditemukan');
+        setIsScannerOpen(false);
+        return;
+      }
+      html5QrcodeRef.current = new Html5Qrcode('reader');
+      try {
+        await html5QrcodeRef.current.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          (decodedText) => {
+            setBarcodeInput(decodedText);
+            handleBarcodeScan(decodedText);
+            setIsScannerOpen(false);
+            html5QrcodeRef.current?.stop().then(() => html5QrcodeRef.current?.clear());
+          },
+          () => {}
+        );
+      } catch {
+        setScanningMessage('Gagal mengakses kamera');
+        setIsScannerOpen(false);
+      }
+    }, 300);
   };
 
   const stopScanner = () => {
