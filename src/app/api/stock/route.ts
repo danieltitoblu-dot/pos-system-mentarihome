@@ -10,10 +10,16 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { productId, type, quantity, reason } = await request.json();
+  const { productId, type, quantity, costPrice, reason } = await request.json();
   
   const transaction = await prisma.stockTransaction.create({
-    data: { productId: parseInt(productId), type, quantity: parseInt(quantity), reason },
+    data: { 
+      productId: parseInt(productId), 
+      type, 
+      quantity: parseInt(quantity), 
+      costPrice: type === 'IN' ? parseFloat(costPrice || 0) : null,
+      reason 
+    },
   });
 
   const change = type === 'IN' ? parseInt(quantity) : -parseInt(quantity);
