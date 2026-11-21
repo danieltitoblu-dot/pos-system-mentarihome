@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function Sidebar() {
   const menuItems = [
-    { name: "Dashboard", path: "/", icon: LayoutDashboard },
-    { name: "Kasir", path: "/", icon: ShoppingCart },
+    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { name: "Kasir", path: "/kasir", icon: ShoppingCart },
     { name: "Master Item", path: "/products", icon: Package },
     { name: "Manajemen Stok", path: "/stock", icon: Database },
   ];
